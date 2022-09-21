@@ -1,4 +1,4 @@
-proc build_mariatpcc {} {
+proc build_xpandtpcc {} {
     global maxvuser suppo ntimes threadscreated _ED maria_ssl_options
     upvar #0 dbdict dbdict
 
@@ -8,13 +8,13 @@ proc build_mariatpcc {} {
         set library "mariatcl"
     }
 
-    upvar #0 configmariadb configmariadb
+    upvar #0 configxpand configxpand
     #set variables to values in dict
-    setlocaltpccvars $configmariadb
+    setlocaltpccvars $configxpand
     #If the options menu has been run under the GUI maria_ssl_options is set
     #If build is run under the GUI, CLI or WS maria_ssl_options is not set
     #Set it now if it doesn't exist
-    if ![ info exists maria_ssl_options ] { check_maria_ssl $configmariadb }
+    if ![ info exists maria_ssl_options ] { check_maria_ssl $configxpand }
     if { ![string match windows $::tcl_platform(platform)] && ($maria_host eq "127.0.0.1" || [ string tolower $maria_host ] eq "localhost") && [ string tolower $maria_socket ] != "null" } { set maria_connector "$maria_host:$maria_socket" } else {
         set maria_connector "$maria_host:$maria_port"
     }
@@ -1338,19 +1338,19 @@ mariaclose $mmaria_handler
     }
 }
 
-proc loadmariatpcc { } {
+proc loadxpandtpcc { } {
     global _ED maria_ssl_options
     upvar #0 dbdict dbdict
     if {[dict exists $dbdict maria library ]} {
         set library [ dict get $dbdict maria library ]
     } else { set library "mariatcl" }
-    upvar #0 configmariadb configmariadb
+    upvar #0 configxpand configxpand
     #set variables to values in dict
-    setlocaltpccvars $configmariadb
+    setlocaltpccvars $configxpand
      #If the options menu has been run under the GUI maria_ssl_options is set
     #If build is run under the GUI, CLI or WS maria_ssl_options is not set
     #Set it now if it doesn't exist
-    if ![ info exists maria_ssl_options ] { check_maria_ssl $configmariadb }
+    if ![ info exists maria_ssl_options ] { check_maria_ssl $configxpand }
     ed_edit_clear
     .ed_mainFrame.notebook select .ed_mainFrame.mainwin
     set _ED(packagekeyname) "MariaDB TPROC-C"
@@ -1666,19 +1666,19 @@ insert_mariaconnectpool_drivescript test sync
 }
 }
 
-proc loadtimedmariatpcc { } {
+proc loadtimedxpandtpcc { } {
     global opmode _ED maria_ssl_options
     upvar #0 dbdict dbdict
     if {[dict exists $dbdict maria library ]} {
         set library [ dict get $dbdict maria library ]
     } else { set library "mariatcl" }
-    upvar #0 configmariadb configmariadb
+    upvar #0 configxpand configxpand
     #set variables to values in dict
-    setlocaltpccvars $configmariadb
+    setlocaltpccvars $configxpand
     #If the options menu has been run under the GUI maria_ssl_options is set
     #If build is run under the GUI, CLI or WS maria_ssl_options is not set
     #Set it now if it doesn't exist
-    if ![ info exists maria_ssl_options ] { check_maria_ssl $configmariadb }
+    if ![ info exists maria_ssl_options ] { check_maria_ssl $configxpand }
     ed_edit_clear
     .ed_mainFrame.notebook select .ed_mainFrame.mainwin
     set _ED(packagekeyname) "MariaDB TPROC-C Timed"
@@ -1788,7 +1788,7 @@ switch $myposition {
                 return
             } else {
                 regexp {\{\{tps_total\ ([0-9]+)\}\}} $handler_stat all com_comm
-                set end_trans [ expr $com_comm ]
+                set start_trans [ expr $com_comm ]
             }
             if {[catch {set start_nopm [ list [ maria::sel $maria_handler "select sum(d_next_o_id) from district" -list ] ]}]} {
                 puts stderr {error, failed to query district table}
@@ -2224,7 +2224,7 @@ switch $myposition {
                 return
             } else {
                 regexp {\{\{tps_total\ ([0-9]+)\}\}} $handler_stat all com_comm
-                set end_trans [ expr $com_comm ]
+                set start_trans [ expr $com_comm ]
             }
             if {[catch {set start_nopm [ list [ maria::sel $maria_handler "select sum(d_next_o_id) from district" -list ] ]}]} {
                 puts stderr {error, failed to query district table}
