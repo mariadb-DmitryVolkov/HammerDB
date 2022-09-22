@@ -2,8 +2,26 @@
 
 HammerDB is the leading benchmarking and load testing software for the worlds most popular databases supporting Oracle Database, Microsoft SQL Server, IBM Db2, PostgreSQL, MySQL and MariaDB.
 
-## Example TCL script for Xpand
+## About This fork
+
+This fork contains HammerDB 4.5 with additional changes for running [MariaDB Xpand](https://mariadb.com/products/enterprise/xpand/). In addition `bin` and `lib` contains pre-build binaries for running it on RedHat 8/Rocky8 Linux only. It is recommend to use [Maxscale](https://mariadb.com/kb/en/maxscale/) in the front of Xpand cluster.
+
+## Installing MariaDB client libraries
+
+```shell
+wget https://downloads.mariadb.com/MariaDB/mariadb_repo_setup
+chmod +x mariadb_repo_setup
+./mariadb_repo_setup --mariadb-server-version=mariadb-10.7
+ --skip-maxscale --skip-tools
+dnf install -y MariaDB-client MariaDB-shared
+```
+
+## Example TCL script for MariaDB Xpand
+
+As MariaDB Xpand is MariaDB compatible we decided to leave all parameters names start with `maria`.
+
 ### Load Phase
+
 ```tcl
 dbset db xpand
 diset connection maria_host <host>
@@ -16,7 +34,9 @@ diset tpcc maria_num_vu <virtual users>
 print dict
 buildschema
 ```
+
 ### Run Phase
+
 ```tcl
 diset tpcc maria_allwarehouse true
 tcset logtotemp 1
