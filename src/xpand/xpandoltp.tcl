@@ -560,7 +560,7 @@ ENGINE = $maria_storage_engine"
 `d_city` VARCHAR(20) BINARY NULL,
 `d_state` CHAR(2) BINARY NULL,
 `d_zip` CHAR(9) BINARY NULL,
-PRIMARY KEY (`d_w_id`,`d_id`)
+PRIMARY KEY (`d_w_id`,`d_id`) /*$ DISTRIBUTE=2 */
 )
 ENGINE = $maria_storage_engine"
     set sql(3) "CREATE TABLE `history` (
@@ -580,14 +580,14 @@ ENGINE = $maria_storage_engine"
 `i_name` VARCHAR(24) BINARY NULL,
 `i_price` DECIMAL(5, 2) NULL,
 `i_data` VARCHAR(50) BINARY NULL,
-PRIMARY KEY (`i_id`)
+PRIMARY KEY (`i_id`) /*$ DISTRIBUTE=1 */
 )
 ENGINE = $maria_storage_engine"
     set sql(5) "CREATE TABLE `new_order` (
 `no_w_id` INT NOT NULL,
 `no_d_id` INT NOT NULL,
 `no_o_id` INT NOT NULL,
-PRIMARY KEY (`no_w_id`, `no_d_id`, `no_o_id`)
+PRIMARY KEY (`no_w_id`, `no_d_id`, `no_o_id`) /*$ DISTRIBUTE=3 */
 )
 ENGINE = $maria_storage_engine"
     set sql(6) "CREATE TABLE `orders` (
@@ -599,8 +599,8 @@ ENGINE = $maria_storage_engine"
 `o_ol_cnt` INT NULL,
 `o_all_local` INT NULL,
 `o_entry_d` DATETIME NULL,
-PRIMARY KEY (`o_w_id`,`o_d_id`,`o_id`),
-KEY o_w_id (`o_w_id`,`o_d_id`,`o_c_id`,`o_id`)
+PRIMARY KEY (`o_w_id`,`o_d_id`,`o_id`) /*$ DISTRIBUTE=3 */,
+KEY o_w_id (`o_w_id`,`o_d_id`,`o_c_id`,`o_id`) /*$ DISTRIBUTE=3 */
 )
 ENGINE = $maria_storage_engine"
     if {$num_part eq 0} {
@@ -630,7 +630,7 @@ ENGINE = $maria_storage_engine"
 `ol_supply_w_id` INT NULL,
 `ol_quantity` INT NULL,
 `ol_dist_info` CHAR(24) BINARY NULL,
-PRIMARY KEY (`ol_w_id`,`ol_d_id`,`ol_o_id`,`ol_number`)
+PRIMARY KEY (`ol_w_id`,`ol_d_id`,`ol_o_id`,`ol_number`) /*$ DISTRIBUTE=2 */
 )
 ENGINE = $maria_storage_engine
 PARTITION BY HASH (`ol_w_id`)
@@ -654,7 +654,7 @@ PARTITIONS $num_part"
 `s_order_cnt` INT(6) NULL,
 `s_remote_cnt` INT(6) NULL,
 `s_data` VARCHAR(50) BINARY NULL,
-PRIMARY KEY (`s_w_id`,`s_i_id`)
+PRIMARY KEY (`s_w_id`,`s_i_id`)  /*$ DISTRIBUTE=2 */
 )
 ENGINE = $maria_storage_engine"
     set sql(9) "CREATE TABLE `warehouse` (
@@ -667,7 +667,7 @@ ENGINE = $maria_storage_engine"
 `w_city` VARCHAR(20) BINARY NULL,
 `w_state` CHAR(2) BINARY NULL,
 `w_zip` CHAR(9) BINARY NULL,
-PRIMARY KEY (`w_id`)
+PRIMARY KEY (`w_id`) /*$ DISTRIBUTE=1 */
 )
 ENGINE = $maria_storage_engine"
     for { set i 1 } { $i <= 9 } { incr i } {
