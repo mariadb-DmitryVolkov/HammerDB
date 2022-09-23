@@ -52,6 +52,10 @@ vurun
 tcstop
 ```
 
+## Evaluating the results
+
+Please note that HammerDB uses a derived from TPC-C version TPROC-C, therefore you could only compare results within the same benchmark (HammerDB). See for example discussion [here](https://github.com/TPC-Council/HammerDB/issues/435).
+
 ## Credits
 
 - Steve Shaw
