@@ -1,5 +1,7 @@
 # HammerDB
 
+## This fork is not maintained anymore (as of 4/28/2023). Development has moved to [this repo](https://github.com/mariadb-corporation/HammerDB).
+
 HammerDB is the leading benchmarking and load testing software for the worlds most popular databases supporting Oracle Database, Microsoft SQL Server, IBM Db2, PostgreSQL, MySQL and MariaDB.
 
 ## About This fork
